@@ -2,7 +2,7 @@ import pandas
 import csv
 from googleapiclient.discovery import build
 
-api_key = 'AIzaSyCvygDGjp2T9CQkGVtOLUv7w4TaVe0sM8Y'
+api_key = '--secret--'
 
 comments = list()
 api_obj = build('youtube', 'v3', developerKey=api_key)
