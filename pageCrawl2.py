@@ -1,15 +1,18 @@
 from selenium import webdriver
 import time
-from openpyxl import Workbook
 import pandas as pd
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
 
-wb = Workbook(write_only=True)
-ws = wb.create_sheet()
 
-driver = webdriver.Chrome()
-driver.get("URL")
+options = webdriver.ChromeOptions()
+options.add_argument("headless")
+options.add_argument('--mute-audio')
+
+driver = webdriver.Chrome(options=options)
+driver.set_window_size(800, 600)
+driver.get("https://www.youtube.com/watch?v=sykBRIYlSTg")
 driver.implicitly_wait(3)
 
 time.sleep(1.5)
@@ -33,12 +36,12 @@ time.sleep(1.5)
 
 # 팝업 닫기
 try:
-    driver.find_element_by_css_selector("#dismiss-button > a").click()
+    driver.find_element(by=By.CSS_SELECTOR, value="#dismiss-button > a").click()
 except:
     pass
 
 # 대댓글 모두 열기
-buttons = driver.find_elements_by_css_selector("#more-replies > a")
+buttons =driver.find_elements(by=By.CSS_SELECTOR, value="#more-replies > a")
 
 time.sleep(1.5)
 
@@ -71,6 +74,8 @@ for i in range(len(comment_list)):
     temp_comment = temp_comment.replace('\t', '')
     temp_comment = temp_comment.replace('    ', '')
     comment_final.append(temp_comment)
+
+driver.quit()
 
 pd_data = {"아이디" : id_final , "댓글 내용" : comment_final}
 youtube_pd = pd.DataFrame(pd_data)
