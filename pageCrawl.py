@@ -1,23 +1,32 @@
+from _csv import writer
 import pandas
 import csv
 from googleapiclient.discovery import build
 
-api_key = '--secret--'
-
+api_key = 'AIzaSyCvygDGjp2T9CQkGVtOLUv7w4TaVe0sM8Y'
 comments = list()
 api_obj = build('youtube', 'v3', developerKey=api_key)
 
+'''
 # redial에서 언급된 영화 리스트
 movie_list = []
 f = open('movies_with_mentions.csv', 'r', encoding='UTF-8')
 rdr = csv.reader(f)
 
+
 # 각 영화 검색 결과 비디오들의 id 리스트
 for line in rdr:
     movie_list.append(line[1])
-
-for idx in range(1, 100):  # len(movie_list)):
-    find_ids = api_obj.search().list(part='id', q=movie_list[idx], maxResults='8', type='video').execute()
+'''
+query = "movies for kids recommend"
+find_ids = api_obj.search().list(part='id', q= query, maxResults='4', type='video').execute()
+for its in find_ids['items']:
+    videos = [query, its['id']['videoId']]
+    with open('videos_id_emotions.csv', 'a', newline='', encoding='utf-8') as f_object:
+        writer_object = writer(f_object)
+        writer_object.writerow(videos)
+        f_object.close()
+    '''
     comments = []
     for its in find_ids['items']:
         video_id = its['id']['videoId']
@@ -47,6 +56,7 @@ for idx in range(1, 100):  # len(movie_list)):
                     break
         except:
             continue
+    '''
 
-df = pandas.DataFrame(comments)
-df.to_csv('results.csv', header=['movie_name', 'comment', 'author', 'num_likes'], index=False)
+#df = pandas.DataFrame(comments)
+#df.to_csv('videos.csv', header=['movie_name', 'title', 'videoID'], index=False)
