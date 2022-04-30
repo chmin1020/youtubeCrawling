@@ -1,9 +1,7 @@
 import csv
 from _csv import writer
-
 from selenium import webdriver
 import time
-import pandas as pd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
@@ -18,14 +16,13 @@ rdr = csv.reader(f)
 for line in rdr:
     video_list.append(line)
 
-
 # selenium
 options = webdriver.ChromeOptions()
 options.add_argument("headless")
 options.add_argument('--mute-audio')
 options.add_argument('--disable-gpu')
 
-for i in range(11, 20):
+for i in range(1, 151):
     print(str(i) + "시작")
     basic_url = "https://www.youtube.com/watch?v="
     driver = webdriver.Chrome(options=options)
@@ -38,17 +35,9 @@ for i in range(11, 20):
     driver.execute_script("window.scrollTo(0, 800)")
     time.sleep(3)
 
-    # 페이지 끝까지 스크롤
-    last_height = driver.execute_script("return document.documentElement.scrollHeight")
-
-    for j in range(0, 3):
+    for j in range(0, 2):
         driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
         time.sleep(1.0)
-
-        #new_height = driver.execute_script("return document.documentElement.scrollHeight")
-        #if new_height == last_height:
-        #    break
-        #last_height = new_height
 
     time.sleep(1.0)
 
@@ -98,12 +87,3 @@ for i in range(11, 20):
         f_object.close()
 
     driver.quit()
-
-#pd_data = {"movie_name": movie_name, "id": id_final, "comments": comment_final}
-#youtube_pd = pd.DataFrame(pd_data)
-#youtube_pd.to_csv('comments.csv', header=['movie_name', 'id', 'comments'], index=False)
-
-
-
-# youtube_pd = pd.DataFrame(pd_data)
-# youtube_pd.to_excel('youtube.xlsx')
